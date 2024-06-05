@@ -64,11 +64,11 @@ int ekran_mainmenu(){
     return 0;
 }
 
-void ekran_wyswietl_pionki(int pionki[25][4][4], int id_pierwszy,  int id_drugi , int id_trzeci){
+void ekran_wyswietl_pionki(int pionki[25][4][4], int id_pierwszy,  int id_drugi , int id_trzeci, bool upierw = false, bool udrug = false, bool utrze = false){
     bool used_pier = false ,used_drug = false, used_trze = false;
-    if (id_pierwszy == -1) used_pier = true;
-    if (id_drugi == -1) used_drug = true;
-    if (id_trzeci == -1) used_trze = true;
+    if ((id_pierwszy == -1) || upierw) used_pier = true;
+    if ((id_drugi == -1) || udrug) used_drug = true;
+    if ((id_trzeci == -1) || utrze) used_trze = true;
     cout<<"+-----KLOCKI-----+"<<endl;
     cout<<"|  1     2     3 |"<<endl;
     cout<<'|';

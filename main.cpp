@@ -155,6 +155,7 @@ int plansza[12][12] = {
 
 unsigned long long int punkty = 0, naj_wynik = 0;
 short int klocek_j, klocek_d, klocek_t, klocek, x, y;
+bool pier = false, drug = false, trze = false;
 
 int main(){
     srand(time(NULL));
@@ -165,37 +166,48 @@ int main(){
     //logika gry tu
     system("cls");
     punkty = 0;
+    int i = 0;
     while (true){
-        cout<<"Punkty: "<<punkty<<'\t'<<"Najwyzszy wynik: "<<naj_wynik<<'\n';
-        ekran_rysuj_pl (plansza);
-        cout<<endl;
+        system("cls");
         klocek_j = rand()%25;
         klocek_d = rand()%25;
         klocek_t = rand()%25;
+        klocek == 1;
+        pier = false; drug = false; trze = false;
+        
         //cout<<klocek_j<<' '<<klocek_d<<' '<<klocek_t<<endl;
-        if(!logika_czyanyfit(plansza, pionki, klocek_j, klocek_d, klocek_t))
+        
+        //cout<<klocek_j<<' '<<klocek_d<<' '<<klocek_t<<endl;
+        proba_ponowna:{
+        if(!logika_czyanyfit(plansza, pionki, klocek_j, klocek_d, klocek_t, pier, drug, trze))
             {
                 system("cls");
-                cout<<endl<<endl<<"\t Przegrales. Twoj wynik wyniosl: \n"<<punkty<<"\n";
+                cout<<endl<<endl<<"\t Przegrales. Twoj wynik wyniosl: "<<punkty<<"\n";
                 cout<<"Twoj najwyzszy wynik wyniosl: "<<naj_wynik<<'.';
                     cout<<"\nNacisnij ENTER aby kontynuowac.";
                 system("pause");
                 break;
             }
-        //cout<<klocek_j<<' '<<klocek_d<<' '<<klocek_t<<endl;
-        ekran_wyswietl_pionki(pionki, klocek_j, klocek_d, klocek_t);
+        cout<<"Punkty: "<<punkty<<'\t'<<"Najwyzszy wynik: "<<naj_wynik<<'\n';
+        ekran_rysuj_pl (plansza);
+        cout<<endl;
+        ekran_wyswietl_pionki(pionki, klocek_j, klocek_d, klocek_t, pier, drug, trze);
         cin>>klocek;
         if (klocek == 0) break;
+        if (klocek == 1) klocek = klocek_j; else if (klocek == 2) klocek = klocek_d; else klocek = klocek_t;
+        if (klocek == -1) {cout<<"Wybrany klocek nie miesci sie lub zostal juz uzyty. "<<endl; Sleep(2000); system("cls"); goto proba_ponowna;} 
         cout<<"Wybrano klocek nr "<<klocek<<". Gdzie go chcesz umiescic? (x y)"<<endl;
         cin>>x>>y;
-        if (klocek == 1) klocek = klocek_j; else if (klocek == 2) klocek = klocek_d; else klocek = klocek_t;
         if (!logika_czyfit(plansza, pionki[klocek], x, y))
-            {cout<<"Wybrany klocek nie miesci sie w podanym miejscu."<<endl; Sleep(2000);}
-        else {logika_mat_dodaj_offset(pionki[klocek], plansza, x-1, y-1);punkty += 3;}
+            {cout<<"Wybrany klocek nie miesci sie w podanym miejscu."<<endl; Sleep(2000); system("cls"); goto proba_ponowna;}
+        else {logika_mat_dodaj_offset(pionki[klocek], plansza, x-1, y-1);punkty += 3; if (klocek == klocek_j) pier = true; else if (klocek == klocek_d) drug = true; else trze = false;}
         punkty += logika_usuwaniepunkty(plansza);
         if (punkty >= naj_wynik)
-            naj_wynik = punkty; 
-        system("cls");
+            naj_wynik = punkty;
+        i++; 
+        system("cls");}
+        if (i < 3) goto proba_ponowna;
+        else i = 0;
     }
     }
     return 0;

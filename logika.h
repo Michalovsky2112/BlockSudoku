@@ -25,12 +25,12 @@ bool logika_czyfit(int plansza [12][12], int pionek [4][4], int x, int y){
     return returner;
 }
 
-bool logika_czyanyfit(int plansza[12][12], int pionek[25][4][4], short int & id_pierw, short int & id_drugi, short int & id_trzec){
+bool logika_czyanyfit(int plansza[12][12], int pionek[25][4][4], short int & id_pierw, short int & id_drugi, short int & id_trzec, bool & used_p, bool & used_d, bool & used_t){
     const int rozmiar_planszy = 9;
     int id_pier = id_pierw, id_drug = id_drugi, id_trze = id_trzec;
     id_drugi = -1; id_pierw = -1; id_trzec = -1;
 
-    if (id_pier > -1) {
+    if (id_pier != -1) {
         for (int x = 1; x < rozmiar_planszy+1; x++) {  
             for (int y = 1; y < rozmiar_planszy+1; y++) {   
                 if (logika_czyfit(plansza, pionek[id_pier], x, y)) {
@@ -38,7 +38,7 @@ bool logika_czyanyfit(int plansza[12][12], int pionek[25][4][4], short int & id_
                 }
             }
         }
-    }
+    } else if (id_pier == -2) {id_pierw = id_pier; used_p = true;} 
     
     if (id_drug > -1) {
         for (int x = 1; x < rozmiar_planszy+1; x++) {  
@@ -48,7 +48,7 @@ bool logika_czyanyfit(int plansza[12][12], int pionek[25][4][4], short int & id_
                 }
             }
         }
-    }
+    } else if (id_drug == -2) {id_drugi = id_drug; used_d = true;} 
     
     if (id_trze > -1) {
         for (int x = 1; x < rozmiar_planszy+1; x++) {  
@@ -58,7 +58,7 @@ bool logika_czyanyfit(int plansza[12][12], int pionek[25][4][4], short int & id_
                 }
             }
         }
-    }
+    } else if (id_trze == -2) {id_trze = id_trzec; used_t = true;} 
 
     if (id_pierw == -1 && id_drugi == -1 && id_trzec == -1) {
         return false;
